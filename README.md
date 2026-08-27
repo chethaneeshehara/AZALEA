@@ -1,0 +1,1 @@
+AZALEA — A modern fashion e-commerce mobile application built with Flutter, Node.js, MongoDB, and Firebase, featuring personalized shopping and an interactive outfit builder.
