@@ -2907,7 +2907,7 @@ class CartScreen extends StatelessWidget {
 }
 
 // ============================================================
-// PROFILE SCREEN
+// PROFILE SCREEN (MATCHING DESIGN SPECIFICATION)
 // ============================================================
 
 class ProfileScreen extends StatelessWidget {
@@ -2915,266 +2915,240 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding:
-          const EdgeInsets.fromLTRB(
-        20,
-        20,
-        20,
-        30,
-      ),
-      child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'My Profile',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight:
-                  FontWeight.bold,
-              color: darkCharcoal,
-            ),
-          ),
+    // Shared color definitions to prevent missing variable errors
+    const darkCharcoal = Color(0xFF2C2224);
+    const azaleaPink = Color(0xFFE8899B);
 
-          const SizedBox(height: 20),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFAF4F0),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
 
-          // PROFILE HEADER
-          Container(
-            padding:
-                const EdgeInsets.all(18),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius:
-                  BorderRadius.circular(18),
-            ),
-            child: Row(
-              children: [
-                ClipOval(
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
-                    width: 75,
-                    height: 75,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-
-                const SizedBox(width: 15),
-
-                const Expanded(
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment
-                            .start,
-                    children: [
-                      Text(
-                        'Sophia Anderson',
-                        style: TextStyle(
-                          fontSize: 19,
-                          fontWeight:
-                              FontWeight.bold,
-                          color:
-                              darkCharcoal,
-                        ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        'sophia@example.com',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color:
-                              Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Container(
-                  padding:
-                      const EdgeInsets.all(9),
-                  decoration:
-                      const BoxDecoration(
-                    color: blushPink,
+              // ------------------------------------------------
+              // Centered Profile Avatar
+              // ------------------------------------------------
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
+                    border: Border.all(
+                      color: azaleaPink.withOpacity(0.5),
+                      width: 2,
+                    ),
                   ),
-                  child: const Icon(
-                    Icons.edit_outlined,
-                    size: 18,
-                    color: azaleaPink,
+                  child: const CircleAvatar(
+                    radius: 42,
+                    backgroundImage: NetworkImage(
+                      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80',
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 25),
-
-          const Text(
-            'My Account',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight:
-                  FontWeight.bold,
-              color: darkCharcoal,
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          _profileTile(
-            icon: Icons.receipt_long_outlined,
-            title: 'My Orders',
-            subtitle:
-                'View your order history',
-          ),
-
-          _profileTile(
-            icon: Icons.location_on_outlined,
-            title: 'Addresses',
-            subtitle:
-                'Manage delivery addresses',
-          ),
-
-          _profileTile(
-            icon: Icons.credit_card_outlined,
-            title: 'Payment Methods',
-            subtitle:
-                'Manage your payment options',
-          ),
-
-          const SizedBox(height: 20),
-
-          const Text(
-            'Preferences',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight:
-                  FontWeight.bold,
-              color: darkCharcoal,
-            ),
-          ),
-
-          const SizedBox(height: 12),
-
-          _profileTile(
-            icon: Icons.notifications_none,
-            title: 'Notifications',
-            subtitle:
-                'Manage notifications',
-          ),
-
-          _profileTile(
-            icon: Icons.settings_outlined,
-            title: 'Settings',
-            subtitle:
-                'App and account settings',
-          ),
-
-          _profileTile(
-            icon: Icons.help_outline,
-            title: 'Help Center',
-            subtitle:
-                'Get help with AZALEA',
-          ),
-
-          const SizedBox(height: 20),
-
-          _profileTile(
-            icon: Icons.logout,
-            title: 'Logout',
-            subtitle:
-                'Sign out of your account',
-            iconColor: azaleaPink,
-            onTap: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const WelcomeScreen(),
-                ),
-                (route) => false,
-              );
-            },
-          ),
-
-          const SizedBox(height: 15),
-
-          const Center(
-            child: Text(
-              'AZALEA • YOUR STYLE, YOUR STORY',
-              style: TextStyle(
-                fontSize: 10,
-                letterSpacing: 1.5,
-                color: Colors.grey,
               ),
-            ),
+
+              const SizedBox(height: 12),
+
+              // ------------------------------------------------
+              // User Name & Email
+              // ------------------------------------------------
+              const Text(
+                'Sophia Laurent',
+                style: TextStyle(
+                  fontFamily: 'serif',
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: darkCharcoal,
+                ),
+              ),
+
+              const SizedBox(height: 4),
+
+              const Text(
+                'sophia@example.com',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Color(0xFF8A7A7D),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // ------------------------------------------------
+              // User Stats Row (Orders / Outfits / Saved)
+              // ------------------------------------------------
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _statItem('12', 'Orders', darkCharcoal),
+                  _statDivider(),
+                  _statItem('5', 'Outfits', darkCharcoal),
+                  _statDivider(),
+                  _statItem('23', 'Saved', darkCharcoal),
+                ],
+              ),
+
+              const SizedBox(height: 25),
+
+              // ------------------------------------------------
+              // Main Menu Grouped Card
+              // ------------------------------------------------
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.02),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    _menuTile(emoji: '📦', title: 'My Orders'),
+                    _menuDivider(),
+                    _menuTile(emoji: '❤️', title: 'Wishlist'),
+                    _menuDivider(),
+                    _menuTile(emoji: '📍', title: 'Address Book'),
+                    _menuDivider(),
+                    _menuTile(emoji: '💳', title: 'Payment Methods'),
+                    _menuDivider(),
+                    _menuTile(emoji: '🔔', title: 'Notifications'),
+                    _menuDivider(),
+                    _menuTile(emoji: '✨', title: 'Style Studio'),
+                    _menuDivider(),
+                    _menuTile(emoji: '⚙️', title: 'Settings'),
+                    _menuDivider(),
+                    _menuTile(emoji: '💬', title: 'Help & Support', isLast: true),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 25),
+
+              // ------------------------------------------------
+              // Sign Out Button
+              // ------------------------------------------------
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const WelcomeScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                      color: azaleaPink.withOpacity(0.4),
+                      width: 1.2,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    backgroundColor: const Color(0xFFFFF5F6),
+                  ),
+                  child: const Text(
+                    'Sign Out',
+                    style: TextStyle(
+                      color: azaleaPink,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _profileTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    Color iconColor = darkCharcoal,
-    VoidCallback? onTap,
-  }) {
-    return Container(
-      margin:
-          const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius:
-            BorderRadius.circular(15),
-      ),
-      child: ListTile(
-        onTap: onTap,
-        contentPadding:
-            const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 4,
-        ),
-        leading: Container(
-          padding:
-              const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: iconColor ==
-                    azaleaPink
-                ? blushPink
-                : warmIvory,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            color: iconColor,
-            size: 21,
+  // Helper Widget: Individual Stat Column
+  static Widget _statItem(String number, String label, Color textColor) {
+    return Column(
+      children: [
+        Text(
+          number,
+          style: TextStyle(
+            fontFamily: 'serif',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: textColor,
           ),
         ),
-        title: Text(
-          title,
+        const SizedBox(height: 2),
+        Text(
+          label,
           style: const TextStyle(
-            fontWeight:
-                FontWeight.w600,
-            color: darkCharcoal,
-            fontSize: 14,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: const TextStyle(
-            color: Colors.grey,
             fontSize: 11,
+            color: Color(0xFF8A7A7D),
           ),
         ),
-        trailing: const Icon(
-          Icons.arrow_forward_ios,
-          size: 14,
-          color: Colors.grey,
+      ],
+    );
+  }
+
+  // Helper Widget: Divider between stats
+  static Widget _statDivider() {
+    return Container(
+      height: 20,
+      width: 1,
+      margin: const EdgeInsets.symmetric(horizontal: 25),
+      color: const Color(0xFFEFE6E2),
+    );
+  }
+
+  // Helper Widget: Menu Item Row
+  static Widget _menuTile({
+    required String emoji,
+    required String title,
+    VoidCallback? onTap,
+    bool isLast = false,
+  }) {
+    return ListTile(
+      onTap: onTap ?? () {},
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+      leading: Text(
+        emoji,
+        style: const TextStyle(fontSize: 18),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF2C2224),
         ),
       ),
+      trailing: const Icon(
+        Icons.chevron_right,
+        size: 18,
+        color: Color(0xFFA09093),
+      ),
+    );
+  }
+
+  // Helper Widget: Thin separator line for menu list
+  static Widget _menuDivider() {
+    return const Divider(
+      height: 1,
+      thickness: 1,
+      indent: 20,
+      endIndent: 20,
+      color: Color(0xFFF7EFEB),
     );
   }
 }
