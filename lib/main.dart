@@ -13,6 +13,8 @@ const Color blushPink = Color(0xFFF8DDE2);
 const Color warmIvory = Color(0xFFFFF9F5);
 const Color sageGreen = Color(0xFFA8B8A0);
 const Color darkCharcoal = Color(0xFF3A3032);
+const Color inputBorderColor = Color(0xFFE8D9DC);
+const Color subtitleColor = Color(0xFF8A7A7D);
 
 // ============================================================
 // PRODUCT MODEL
@@ -508,21 +510,23 @@ class OnboardingPage extends StatelessWidget {
   }
 }
 
+
+
 // ============================================================
-// WELCOME / LOGIN
+// WELCOME / LOGIN SCREEN
 // ============================================================
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
   @override
-  State<WelcomeScreen> createState() =>
-      _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  bool showPassword = false;
 
   @override
   void dispose() {
@@ -535,8 +539,40 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            const HomeScreen(),
+        builder: (_) => const HomeScreen(),
+      ),
+    );
+  }
+
+  Widget _buildFieldLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: darkCharcoal,
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration({String? hintText, Widget? suffix}) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+      suffixIcon: suffix,
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(11),
+        borderSide: const BorderSide(color: inputBorderColor, width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(11),
+        borderSide: const BorderSide(color: azaleaPink, width: 1.5),
       ),
     );
   }
@@ -547,103 +583,120 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       backgroundColor: warmIvory,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 50),
+              const SizedBox(height: 78),
 
+              // Logo Section
               Center(
                 child: Column(
                   children: [
                     const Text(
                       'AZALEA',
                       style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 5,
-                        color: azaleaPink,
+                        fontSize: 32,
+                        fontFamily: 'Serif', // Serif font style matching screenshots
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 6,
+                        color: darkCharcoal,
                       ),
                     ),
-                    const SizedBox(height: 5),
-                    Text(
-                      'YOUR STYLE, YOUR STORY',
+                    const SizedBox(height: 4),
+                    const Text(
+                      'WEAR YOUR STORY',
                       style: TextStyle(
-                        fontSize: 10,
-                        letterSpacing: 2,
-                        color: Colors.grey.shade600,
+                        fontSize: 11,
+                        letterSpacing: 3,
+                        color: subtitleColor,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 60),
+              const SizedBox(height: 62),
 
+              // Title Section
               const Text(
-                'Welcome Back',
+                'Welcome back',
                 style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 26,
+                  fontFamily: 'Serif',
+                  fontWeight: FontWeight.w600,
                   color: darkCharcoal,
                 ),
               ),
-
-              const SizedBox(height: 8),
-
+              const SizedBox(height: 4),
               const Text(
-                'Sign in to continue your fashion journey.',
+                'Sign in to continue',
                 style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
+                  color: subtitleColor,
+                  fontSize: 13,
                 ),
               ),
 
-              const SizedBox(height: 35),
+              const SizedBox(height: 30),
 
+              // Email Field
+              _buildFieldLabel('Email Address'),
               TextField(
                 controller: emailController,
-                keyboardType:
-                    TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon:
-                      const Icon(Icons.email_outlined),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(14),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
+                keyboardType: TextInputType.emailAddress,
+                decoration: _inputDecoration(hintText: 'you@example.com'),
               ),
 
               const SizedBox(height: 18),
 
+              // Password Field
+              _buildFieldLabel('Password'),
               TextField(
                 controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  prefixIcon:
-                      const Icon(Icons.lock_outline),
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(14),
-                    borderSide: BorderSide.none,
+                obscureText: !showPassword,
+                decoration: _inputDecoration(
+                  suffix: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        showPassword = !showPassword;
+                      });
+                    },
+                    child: Text(
+                      showPassword ? 'HIDE' : 'SHOW',
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: subtitleColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 25),
+              const SizedBox(height: 12),
 
+              // Forgot Password
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () {},
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(
+                      color: azaleaPink,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Sign In Button
               SizedBox(
                 width: double.infinity,
-                height: 55,
+                height: 52,
                 child: ElevatedButton(
                   onPressed: login,
                   style: ElevatedButton.styleFrom(
@@ -651,40 +704,98 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                   child: const Text(
-                    'LOGIN',
+                    'Sign In',
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
 
-              Center(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const SignUpScreen(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    "Don't have an account? Sign Up",
-                    style: TextStyle(
-                      color: azaleaPink,
-                      fontWeight: FontWeight.w600,
+              // Divider
+              Row(
+                children: [
+                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      'or continue with',
+                      style: TextStyle(fontSize: 12, color: subtitleColor),
                     ),
                   ),
+                  Expanded(child: Divider(color: Colors.grey.shade300)),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Google Button
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: Image.network(
+                    'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+                    height: 20,
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.g_mobiledata, color: Colors.blue),
+                  ),
+                  label: const Text(
+                    'Continue with Google',
+                    style: TextStyle(
+                      color: darkCharcoal,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(color: inputBorderColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Bottom Link
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Don't have an account? ",
+                      style: TextStyle(color: subtitleColor, fontSize: 13),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Create Account',
+                        style: TextStyle(
+                          color: azaleaPink,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -696,130 +807,249 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 }
 
 // ============================================================
-// SIGN UP
+// SIGN UP SCREEN
 // ============================================================
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  bool isAgreed = false;
+
+  Widget _buildFieldLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: darkCharcoal,
+        ),
+      ),
+    );
+  }
+
+  InputDecoration _inputDecoration({String? hintText}) {
+    return InputDecoration(
+      hintText: hintText,
+      hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(11),
+        borderSide: const BorderSide(color: inputBorderColor, width: 1),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(11),
+        borderSide: const BorderSide(color: azaleaPink, width: 1.5),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: warmIvory,
-      appBar: AppBar(
-        backgroundColor: warmIvory,
-        elevation: 0,
-        iconTheme: const IconThemeData(
-          color: darkCharcoal,
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(25),
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Create Account',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: darkCharcoal,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Back Button
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: const Icon(Icons.arrow_back_ios, color: darkCharcoal, size: 20),
+                onPressed: () => Navigator.pop(context),
               ),
-            ),
 
-            const SizedBox(height: 8),
+              const SizedBox(height: 34),
 
-            const Text(
-              'Join AZALEA and discover your style.',
-              style: TextStyle(
-                color: Colors.grey,
+              // Title Section
+              const Text(
+                'Create Account',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontFamily: 'Serif',
+                  fontWeight: FontWeight.w600,
+                  color: darkCharcoal,
+                ),
               ),
-            ),
+              const SizedBox(height: 4),
+              const Text(
+                'Join AZALEA today',
+                style: TextStyle(
+                  color: subtitleColor,
+                  fontSize: 13,
+                ),
+              ),
 
-            const SizedBox(height: 35),
+              const SizedBox(height: 25),
 
-            _inputField(
-              'Full Name',
-              Icons.person_outline,
-            ),
+              // Full Name
+              _buildFieldLabel('Full Name'),
+              TextField(
+                decoration: _inputDecoration(hintText: 'Sophia Laurent'),
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            _inputField(
-              'Email',
-              Icons.email_outlined,
-            ),
+              // Email Address
+              _buildFieldLabel('Email Address'),
+              TextField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: _inputDecoration(hintText: 'you@example.com'),
+              ),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            _inputField(
-              'Password',
-              Icons.lock_outline,
-              obscure: true,
-            ),
+              // Password
+              _buildFieldLabel('Password'),
+              TextField(
+                obscureText: true,
+                decoration: _inputDecoration(),
+              ),
 
-            const SizedBox(height: 30),
+              const SizedBox(height: 16),
 
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const HomeScreen(),
+              // Confirm Password
+              _buildFieldLabel('Confirm Password'),
+              TextField(
+                obscureText: true,
+                decoration: _inputDecoration(),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Terms & Privacy Checkbox
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: Checkbox(
+                      value: isAgreed,
+                      activeColor: azaleaPink,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      side: const BorderSide(color: inputBorderColor, width: 1.5),
+                      onChanged: (val) {
+                        setState(() {
+                          isAgreed = val ?? false;
+                        });
+                      },
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: azaleaPink,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(15),
                   ),
-                ),
-                child: const Text(
-                  'CREATE ACCOUNT',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: RichText(
+                      text: const TextSpan(
+                        style: TextStyle(fontSize: 12, color: subtitleColor, height: 1.4),
+                        children: [
+                          TextSpan(text: "I agree to AZALEA's "),
+                          TextSpan(
+                            text: "Terms of Service",
+                            style: TextStyle(color: azaleaPink),
+                          ),
+                          TextSpan(text: " and "),
+                          TextSpan(
+                            text: "Privacy Policy",
+                            style: TextStyle(color: azaleaPink),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 30),
+
+              // Create Account Button
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (!isAgreed) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Please agree to the Terms of Service and Privacy Policy.',
+                          ),
+                          backgroundColor: azaleaPink,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      return;
+                    }
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: azaleaPink,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  Widget _inputField(
-    String label,
-    IconData icon, {
-    bool obscure = false,
-  }) {
-    return TextField(
-      obscureText: obscure,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius:
-              BorderRadius.circular(14),
-          borderSide: BorderSide.none,
+              const SizedBox(height: 20),
+
+              // Bottom Link
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Already have an account? ",
+                      style: TextStyle(color: subtitleColor, fontSize: 13),
+                    ),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: azaleaPink,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
 // ============================================================
 // HOME SCREEN + BOTTOM NAVIGATION
 // ============================================================
@@ -2905,7 +3135,6 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
-
 // ============================================================
 // PROFILE SCREEN (MATCHING DESIGN SPECIFICATION)
 // ============================================================
@@ -2915,12 +3144,8 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Shared color definitions to prevent missing variable errors
-    const darkCharcoal = Color(0xFF2C2224);
-    const azaleaPink = Color(0xFFE8899B);
-
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF4F0),
+      backgroundColor: warmIvory,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -3152,7 +3377,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
-
 // ============================================================
 // PRODUCT DETAILS
 // ============================================================
