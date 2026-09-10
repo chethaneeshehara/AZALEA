@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../theme/azalea_colors.dart';
@@ -5,6 +6,12 @@ import '../theme/azalea_colors.dart';
 import 'welcome_screen.dart';
 import 'wishlist_screen.dart';
 import 'notifications_screen.dart';
+import 'orders_screen.dart';
+import 'address_book_screen.dart';
+import 'payment_methods_screen.dart';
+import 'settings_screen.dart';
+import 'help_support_screen.dart';
+import 'style_studio_screen.dart';
 
 // ============================================================
 // PROFILE SCREEN
@@ -130,11 +137,11 @@ class ProfileScreen extends StatelessWidget {
                       emoji: '📦',
                       title: 'My Orders',
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'My Orders will be available soon.',
-                            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const OrdersScreen(),
                           ),
                         );
                       },
@@ -164,11 +171,11 @@ class ProfileScreen extends StatelessWidget {
                       emoji: '📍',
                       title: 'Address Book',
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Address Book will be available soon.',
-                            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const AddressBookScreen(),
                           ),
                         );
                       },
@@ -181,11 +188,11 @@ class ProfileScreen extends StatelessWidget {
                       emoji: '💳',
                       title: 'Payment Methods',
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Payment Methods will be available soon.',
-                            ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const PaymentMethodsScreen(),
                           ),
                         );
                       },
@@ -212,53 +219,53 @@ class ProfileScreen extends StatelessWidget {
 
                     // STYLE STUDIO
                     _menuTile(
-                      emoji: '✨',
-                      title: 'Style Studio',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Style Studio will be available soon.',
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+  emoji: '✨',
+  title: 'Style Studio',
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const StyleStudioScreen(),
+      ),
+    );
+  },
+),
 
                     _menuDivider(),
 
                     // SETTINGS
-                    _menuTile(
-                      emoji: '⚙️',
-                      title: 'Settings',
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Settings will be available soon.',
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    // SETTINGS
+_menuTile(
+  emoji: '⚙️',
+  title: 'Settings',
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
+    );
+  },
+),
+
+_menuDivider(),
 
                     _menuDivider(),
 
                     // HELP & SUPPORT
-                    _menuTile(
-                      emoji: '💬',
-                      title: 'Help & Support',
-                      isLast: true,
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Help & Support will be available soon.',
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                   _menuTile(
+  emoji: '💬',
+  title: 'Help & Support',
+  isLast: true,
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const HelpSupportScreen(),
+      ),
+    );
+  },
+),
                   ],
                 ),
               ),
@@ -463,3 +470,4 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 }
+
