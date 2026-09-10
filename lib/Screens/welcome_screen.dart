@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/azalea_colors.dart';
+
+import 'home_screen.dart';
+import 'signup_screen.dart';
 // ============================================================
 // WELCOME / LOGIN SCREEN
 // ============================================================

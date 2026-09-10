@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/azalea_colors.dart';
+import 'welcome_screen.dart';
 // ============================================================
 // ONBOARDING
 // ============================================================
