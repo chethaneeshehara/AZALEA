@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../theme/azalea_colors.dart';
@@ -5,6 +6,9 @@ import '../store/app_store.dart';
 import '../models/product.dart';
 
 import 'product_details_screen.dart';
+import 'search_screen.dart';
+import 'notifications_screen.dart';
+import 'profile_screen.dart';
 
 // ============================================================
 // HOME CONTENT
@@ -24,12 +28,32 @@ class _HomeContentState extends State<HomeContent> {
     'Tops',
     'Bottoms',
     'Shoes',
+    'Accessories'
   ];
 
   int selectedCategory = 0;
 
+  // ============================================================
+  // FILTER PRODUCTS BY CATEGORY
+  // ============================================================
+
+  List<AzaleaProduct> get filteredProducts {
+    if (selectedCategory == 0) {
+      return azaleaStore.products;
+    }
+
+    final selectedName = categories[selectedCategory];
+
+    return azaleaStore.products.where((product) {
+      return product.category.toLowerCase() ==
+          selectedName.toLowerCase();
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isCategorySelected = selectedCategory != 0;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
@@ -68,44 +92,70 @@ class _HomeContentState extends State<HomeContent> {
                 ),
               ),
 
-              Stack(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.notifications_none,
-                      color: darkCharcoal,
-                    ),
-                  ),
-                  Positioned(
-                    right: 9,
-                    top: 8,
-                    child: Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        color: azaleaPink,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // NOTIFICATION
+              GestureDetector(
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const NotificationsScreen(),
+      ),
+    );
+  },
+  child: Stack(
+    children: [
+      Container(
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(
+          Icons.notifications_none,
+          color: darkCharcoal,
+        ),
+      ),
+
+      Positioned(
+        right: 9,
+        top: 8,
+        child: Container(
+          width: 7,
+          height: 7,
+          decoration: const BoxDecoration(
+            color: azaleaPink,
+            shape: BoxShape.circle,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
 
               const SizedBox(width: 10),
 
-              ClipOval(
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
-                  width: 45,
-                  height: 45,
-                  fit: BoxFit.cover,
+                            // PROFILE IMAGE
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const ProfileScreen(),
+                    ),
+                  );
+                },
+                child: ClipOval(
+                  child: Image.network(
+                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
+                    width: 45,
+                    height: 45,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
+
+              const SizedBox(width: 10),
             ],
           ),
 
@@ -115,8 +165,18 @@ class _HomeContentState extends State<HomeContent> {
           // SEARCH
           // ============================================================
 
-          _searchBox(
-            'Search for clothes, shoes...',
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchScreen(),
+                ),
+              );
+            },
+            child: _searchBox(
+              'Search for clothes, shoes...',
+            ),
           ),
 
           const SizedBox(height: 25),
@@ -145,7 +205,7 @@ class _HomeContentState extends State<HomeContent> {
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                         colors: [
-Colors.black.withValues(alpha: 0.65),
+                          Colors.black.withValues(alpha: 0.65),
                           Colors.transparent,
                         ],
                       ),
@@ -155,8 +215,10 @@ Colors.black.withValues(alpha: 0.65),
                   const Padding(
                     padding: EdgeInsets.all(22),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                      mainAxisAlignment:
+                          MainAxisAlignment.center,
                       children: [
                         Text(
                           'NEW ARRIVALS',
@@ -231,181 +293,273 @@ Colors.black.withValues(alpha: 0.65),
           const SizedBox(height: 30),
 
           // ============================================================
-          // NEW ARRIVALS
+          // CATEGORY PRODUCTS
           // ============================================================
 
-          _sectionHeader(
-            'New Arrivals',
-            'View All',
-          ),
-
-          const SizedBox(height: 15),
-
-          SizedBox(
-            height: 310,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _productCard(
-                  context,
-                  azaleaStore.products[0],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[4],
-                ),
-              ],
+          if (isCategorySelected) ...[
+            _sectionHeader(
+              categories[selectedCategory],
+              'View All',
             ),
-          ),
 
-          const SizedBox(height: 20),
+            const SizedBox(height: 15),
 
-          // ============================================================
-          // TRENDING NOW
-          // ============================================================
-
-          _sectionHeader(
-            'Trending Now',
-            'View All',
-          ),
-
-          const SizedBox(height: 15),
-
-          SizedBox(
-            height: 310,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _productCard(
-                  context,
-                  azaleaStore.products[0],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[1],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[2],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[3],
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 30),
-
-          // ============================================================
-          // STYLE STUDIO
-          // ============================================================
-
-          ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: Container(
-              height: 180,
-              width: double.infinity,
-              color: darkCharcoal,
-              child: Stack(
-                children: [
-                  Positioned(
-                    right: -30,
-                    top: -20,
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',
-                        width: 220,
-                        height: 220,
-                        fit: BoxFit.cover,
+            if (filteredProducts.isEmpty)
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 50),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.shopping_bag_outlined,
+                        size: 55,
+                        color: subtitleColor,
                       ),
-                    ),
+                      SizedBox(height: 12),
+                      Text(
+                        'No products available',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: darkCharcoal,
+                        ),
+                      ),
+                    ],
                   ),
+                ),
+              )
+            else
+              SizedBox(
+                height: 310,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: filteredProducts.length,
+                  itemBuilder: (context, index) {
+                    return _productCard(
+                      context,
+                      filteredProducts[index],
+                    );
+                  },
+                ),
+              ),
 
-                  const Padding(
-                    padding: EdgeInsets.all(22),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'STYLE STUDIO',
-                          style: TextStyle(
-                            color: blushPink,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                          ),
-                        ),
+            const SizedBox(height: 30),
 
-                        SizedBox(height: 8),
+            // Show all filtered products in a grid
+            _sectionHeader(
+              'More ${categories[selectedCategory]}',
+              'Explore',
+            ),
 
-                        Text(
-                          'Create your\nperfect look',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+            const SizedBox(height: 15),
 
-                        SizedBox(height: 10),
+            GridView.builder(
+              shrinkWrap: true,
+              physics:
+                  const NeverScrollableScrollPhysics(),
+              itemCount: filteredProducts.length,
+              gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 20,
+                childAspectRatio: 0.62,
+              ),
+              itemBuilder: (context, index) {
+                return _gridProductCard(
+                  context,
+                  filteredProducts[index],
+                );
+              },
+            ),
 
-                        Text(
-                          'Explore Style Studio →',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
+            const SizedBox(height: 30),
+          ]
+
+          // ============================================================
+          // NORMAL HOME CONTENT
+          // ============================================================
+
+          else ...[
+            // ============================================================
+            // NEW ARRIVALS
+            // ============================================================
+
+            _sectionHeader(
+              'New Arrivals',
+              'View All',
+            ),
+
+            const SizedBox(height: 15),
+
+            SizedBox(
+              height: 310,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _productCard(
+                    context,
+                    azaleaStore.products[0],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[4],
                   ),
                 ],
               ),
             ),
-          ),
 
-          const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
-          // ============================================================
-          // RECOMMENDED
-          // ============================================================
+            // ============================================================
+            // TRENDING NOW
+            // ============================================================
 
-          _sectionHeader(
-            'Recommended For You',
-            'View All',
-          ),
-
-          const SizedBox(height: 15),
-
-          SizedBox(
-            height: 310,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                _productCard(
-                  context,
-                  azaleaStore.products[4],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[5],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[6],
-                ),
-                _productCard(
-                  context,
-                  azaleaStore.products[7],
-                ),
-              ],
+            _sectionHeader(
+              'Trending Now',
+              'View All',
             ),
-          ),
 
-          const SizedBox(height: 25),
+            const SizedBox(height: 15),
+
+            SizedBox(
+              height: 310,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _productCard(
+                    context,
+                    azaleaStore.products[0],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[1],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[2],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[3],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // ============================================================
+            // STYLE STUDIO
+            // ============================================================
+
+            ClipRRect(
+              borderRadius: BorderRadius.circular(22),
+              child: Container(
+                height: 180,
+                width: double.infinity,
+                color: darkCharcoal,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      right: -30,
+                      top: -20,
+                      child: ClipOval(
+                        child: Image.network(
+                          'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',
+                          width: 220,
+                          height: 220,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.all(22),
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'STYLE STUDIO',
+                            style: TextStyle(
+                              color: blushPink,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
+                          ),
+
+                          SizedBox(height: 8),
+
+                          Text(
+                            'Create your\nperfect look',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 10),
+
+                          Text(
+                            'Explore Style Studio →',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 30),
+
+            // ============================================================
+            // RECOMMENDED
+            // ============================================================
+
+            _sectionHeader(
+              'Recommended For You',
+              'View All',
+            ),
+
+            const SizedBox(height: 15),
+
+            SizedBox(
+              height: 310,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _productCard(
+                    context,
+                    azaleaStore.products[4],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[5],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[6],
+                  ),
+                  _productCard(
+                    context,
+                    azaleaStore.products[7],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 25),
+          ],
         ],
       ),
     );
@@ -424,7 +578,8 @@ Colors.black.withValues(alpha: 0.65),
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(
+            builder: (context) =>
+                ProductDetailsScreen(
               product: product,
             ),
           ),
@@ -434,12 +589,14 @@ Colors.black.withValues(alpha: 0.65),
         width: 180,
         margin: const EdgeInsets.only(right: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius:
+                      BorderRadius.circular(16),
                   child: Image.network(
                     product.imageUrl,
                     height: 230,
@@ -453,15 +610,18 @@ Colors.black.withValues(alpha: 0.65),
                     top: 10,
                     left: 10,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding:
+                          const EdgeInsets.symmetric(
                         horizontal: 10,
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color: product.badge == 'SALE'
-                            ? sageGreen
-                            : azaleaPink,
-                        borderRadius: BorderRadius.circular(20),
+                        color:
+                            product.badge == 'SALE'
+                                ? sageGreen
+                                : azaleaPink,
+                        borderRadius:
+                            BorderRadius.circular(20),
                       ),
                       child: Text(
                         product.badge!,
@@ -477,7 +637,8 @@ Colors.black.withValues(alpha: 0.65),
                 Positioned(
                   top: 8,
                   right: 8,
-                  child: _favoriteButton(product),
+                  child:
+                      _favoriteButton(product),
                 ),
               ],
             ),
@@ -515,7 +676,8 @@ Colors.black.withValues(alpha: 0.65),
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
-                      decoration: TextDecoration.lineThrough,
+                      decoration:
+                          TextDecoration.lineThrough,
                     ),
                   ),
                 ],
@@ -550,6 +712,151 @@ Colors.black.withValues(alpha: 0.65),
   }
 
   // ============================================================
+  // GRID PRODUCT CARD
+  // ============================================================
+
+  Widget _gridProductCard(
+    BuildContext context,
+    AzaleaProduct product,
+  ) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProductDetailsScreen(
+              product: product,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius:
+              BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius:
+                        const BorderRadius.vertical(
+                      top: Radius.circular(16),
+                    ),
+                    child: Image.network(
+                      product.imageUrl,
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                  if (product.badge != null)
+                    Positioned(
+                      top: 8,
+                      left: 8,
+                      child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color:
+                              product.badge == 'SALE'
+                                  ? sageGreen
+                                  : azaleaPink,
+                          borderRadius:
+                              BorderRadius.circular(15),
+                        ),
+                        child: Text(
+                          product.badge!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight:
+                                FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child:
+                        _favoriteButton(product),
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment:
+                    CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.title,
+                    maxLines: 1,
+                    overflow:
+                        TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight:
+                          FontWeight.w600,
+                      color: darkCharcoal,
+                    ),
+                  ),
+
+                  const SizedBox(height: 5),
+
+                  Text(
+                    product.price,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight:
+                          FontWeight.bold,
+                      color: darkCharcoal,
+                    ),
+                  ),
+
+                  const SizedBox(height: 3),
+
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.star,
+                        size: 13,
+                        color: azaleaPink,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        product.rating.toString(),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ============================================================
   // FAVORITE BUTTON
   // ============================================================
 
@@ -559,11 +866,14 @@ Colors.black.withValues(alpha: 0.65),
     return AnimatedBuilder(
       animation: azaleaStore,
       builder: (context, child) {
-        final liked = azaleaStore.isWishlisted(product);
+        final liked =
+            azaleaStore.isWishlisted(product);
 
         return Container(
           decoration: BoxDecoration(
-color: Colors.white.withValues(alpha: 0.9),
+            color: Colors.white.withValues(
+              alpha: 0.9,
+            ),
             shape: BoxShape.circle,
           ),
           child: IconButton(
@@ -597,15 +907,18 @@ color: Colors.white.withValues(alpha: 0.9),
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.only(right: 10),
-        padding: const EdgeInsets.symmetric(
+        margin:
+            const EdgeInsets.only(right: 10),
+        padding:
+            const EdgeInsets.symmetric(
           horizontal: 18,
         ),
         decoration: BoxDecoration(
           color: selected
               ? azaleaPink
               : Colors.white,
-          borderRadius: BorderRadius.circular(22),
+          borderRadius:
+              BorderRadius.circular(22),
         ),
         child: Center(
           child: Text(
@@ -614,7 +927,8 @@ color: Colors.white.withValues(alpha: 0.9),
               color: selected
                   ? Colors.white
                   : darkCharcoal,
-              fontWeight: FontWeight.w600,
+              fontWeight:
+                  FontWeight.w600,
               fontSize: 13,
             ),
           ),
@@ -632,7 +946,8 @@ color: Colors.white.withValues(alpha: 0.9),
     String action,
   ) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment:
+          MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
@@ -663,12 +978,14 @@ color: Colors.white.withValues(alpha: 0.9),
 Widget _searchBox(String hint) {
   return Container(
     height: 52,
-    padding: const EdgeInsets.symmetric(
+    padding:
+        const EdgeInsets.symmetric(
       horizontal: 15,
     ),
     decoration: BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(15),
+      borderRadius:
+          BorderRadius.circular(15),
     ),
     child: Row(
       children: [
@@ -690,3 +1007,4 @@ Widget _searchBox(String hint) {
     ),
   );
 }
+
