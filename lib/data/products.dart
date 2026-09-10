@@ -10,7 +10,7 @@ final List<AzaleaProduct> azaleaProducts = [
     originalPrice: '\$249',
     discount: '24% OFF',
     imageUrl:
-        'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=700',
+        'https://images.unsplash.com/photo-1564257577054-7c0d8f4a0f87?w=700',
   ),
   AzaleaProduct(
     title: 'Azalea Pink Blouse',

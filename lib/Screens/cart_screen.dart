@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../theme/azalea_colors.dart';
 import '../store/app_store.dart';
 import '../models/cart_item.dart';
+
+import 'checkout_screen.dart';
 // ============================================================
 // CART SCREEN
 // ============================================================
@@ -114,22 +116,15 @@ class CartScreen extends StatelessWidget {
                   width: double.infinity,
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(
-                              context)
-                          .showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'Checkout feature coming soon ✨',
-                          ),
-                          backgroundColor:
-                              azaleaPink,
-                          behavior:
-                              SnackBarBehavior
-                                  .floating,
-                        ),
-                      );
-                    },
+                  onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          const CheckoutScreen(),
+    ),
+  );
+},
                     style: ElevatedButton
                         .styleFrom(
                       backgroundColor:

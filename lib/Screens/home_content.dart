@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '../theme/azalea_colors.dart';
@@ -9,6 +8,7 @@ import 'product_details_screen.dart';
 import 'search_screen.dart';
 import 'notifications_screen.dart';
 import 'profile_screen.dart';
+import 'style_studio_screen.dart';
 
 // ============================================================
 // HOME CONTENT
@@ -28,10 +28,23 @@ class _HomeContentState extends State<HomeContent> {
     'Tops',
     'Bottoms',
     'Shoes',
-    'Accessories'
+    'Accessories',
   ];
 
   int selectedCategory = 0;
+
+  // ============================================================
+  // CATEGORY ICONS
+  // ============================================================
+
+  final Map<String, IconData> categoryIcons = {
+  'All': Icons.grid_view_rounded,
+  'Dresses': Icons.checkroom_outlined,
+  'Tops': Icons.shopping_bag_outlined,
+  'Bottoms': Icons.style_outlined,
+  'Shoes': Icons.shopping_bag_outlined,
+  'Accessories': Icons.watch_outlined,
+};
 
   // ============================================================
   // FILTER PRODUCTS BY CATEGORY
@@ -48,6 +61,20 @@ class _HomeContentState extends State<HomeContent> {
       return product.category.toLowerCase() ==
           selectedName.toLowerCase();
     }).toList();
+  }
+
+  // ============================================================
+  // VIEW ALL CATEGORY
+  // ============================================================
+
+  void viewAllCategory(String category) {
+    final index = categories.indexOf(category);
+
+    if (index != -1) {
+      setState(() {
+        selectedCategory = index;
+      });
+    }
   }
 
   @override
@@ -92,49 +119,55 @@ class _HomeContentState extends State<HomeContent> {
                 ),
               ),
 
+              // ------------------------------------------------
               // NOTIFICATION
-              GestureDetector(
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const NotificationsScreen(),
-      ),
-    );
-  },
-  child: Stack(
-    children: [
-      Container(
-        padding: const EdgeInsets.all(10),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.notifications_none,
-          color: darkCharcoal,
-        ),
-      ),
+              // ------------------------------------------------
 
-      Positioned(
-        right: 9,
-        top: 8,
-        child: Container(
-          width: 7,
-          height: 7,
-          decoration: const BoxDecoration(
-            color: azaleaPink,
-            shape: BoxShape.circle,
-          ),
-        ),
-      ),
-    ],
-  ),
-),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const NotificationsScreen(),
+                    ),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.notifications_none,
+                        color: darkCharcoal,
+                      ),
+                    ),
+                    Positioned(
+                      right: 9,
+                      top: 8,
+                      child: Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                          color: azaleaPink,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
               const SizedBox(width: 10),
 
-                            // PROFILE IMAGE
+              // ------------------------------------------------
+              // PROFILE IMAGE
+              // ------------------------------------------------
+
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -154,8 +187,6 @@ class _HomeContentState extends State<HomeContent> {
                   ),
                 ),
               ),
-
-              const SizedBox(width: 10),
             ],
           ),
 
@@ -185,80 +216,140 @@ class _HomeContentState extends State<HomeContent> {
           // HERO BANNER
           // ============================================================
 
-          ClipRRect(
-            borderRadius: BorderRadius.circular(22),
-            child: SizedBox(
-              height: 220,
-              width: double.infinity,
-              child: Stack(
-                children: [
-                  Image.network(
-                    'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?w=1000',
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                selectedCategory = 0;
+              });
 
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Colors.black.withValues(alpha: 0.65),
-                          Colors.transparent,
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Explore our latest summer collection ✨',
+                  ),
+                  backgroundColor: azaleaPink,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(22),
+              child: SizedBox(
+                height: 220,
+                width: double.infinity,
+                child: Stack(
+                  children: [
+                    Image.network(
+                      'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?w=1000',
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Colors.black.withValues(
+                              alpha: 0.70,
+                            ),
+                            Colors.black.withValues(
+                              alpha: 0.08,
+                            ),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const Padding(
+                      padding: EdgeInsets.all(22),
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        mainAxisAlignment:
+                            MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'NEW ARRIVALS',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 2,
+                            ),
+                          ),
+
+                          SizedBox(height: 8),
+
+                          Text(
+                            'Summer Collection\n2026',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 27,
+                              height: 1.15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
+                          SizedBox(height: 15),
+
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Shop Now',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              SizedBox(width: 6),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: Colors.white,
+                                size: 17,
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
-                  ),
 
-                  const Padding(
-                    padding: EdgeInsets.all(22),
-                    child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                      mainAxisAlignment:
-                          MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'NEW ARRIVALS',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 2,
-                          ),
+                    Positioned(
+                      right: 16,
+                      bottom: 16,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 11,
+                          vertical: 7,
                         ),
-
-                        SizedBox(height: 8),
-
-                        Text(
-                          'Summer Collection\n2026',
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(
+                            alpha: 0.90,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          'Explore',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 27,
+                            color: darkCharcoal,
+                            fontSize: 11,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
-                        SizedBox(height: 14),
-
-                        Text(
-                          'Shop Now  →',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
 
-          const SizedBox(height: 28),
+          const SizedBox(height: 30),
 
           // ============================================================
           // CATEGORIES
@@ -267,17 +358,22 @@ class _HomeContentState extends State<HomeContent> {
           _sectionHeader(
             'Categories',
             'View All',
+            onTap: () {
+              setState(() {
+                selectedCategory = 0;
+              });
+            },
           ),
 
-          const SizedBox(height: 14),
+          const SizedBox(height: 16),
 
           SizedBox(
-            height: 42,
+            height: 82,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                return _categoryChip(
+                return _categoryItem(
                   categories[index],
                   index == selectedCategory,
                   () {
@@ -300,13 +396,16 @@ class _HomeContentState extends State<HomeContent> {
             _sectionHeader(
               categories[selectedCategory],
               'View All',
+              onTap: () {},
             ),
 
             const SizedBox(height: 15),
 
             if (filteredProducts.isEmpty)
               const Padding(
-                padding: EdgeInsets.symmetric(vertical: 50),
+                padding: EdgeInsets.symmetric(
+                  vertical: 50,
+                ),
                 child: Center(
                   child: Column(
                     children: [
@@ -330,7 +429,7 @@ class _HomeContentState extends State<HomeContent> {
               )
             else
               SizedBox(
-                height: 310,
+                height: 330,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: filteredProducts.length,
@@ -345,10 +444,10 @@ class _HomeContentState extends State<HomeContent> {
 
             const SizedBox(height: 30),
 
-            // Show all filtered products in a grid
             _sectionHeader(
               'More ${categories[selectedCategory]}',
               'Explore',
+              onTap: () {},
             ),
 
             const SizedBox(height: 15),
@@ -388,12 +487,17 @@ class _HomeContentState extends State<HomeContent> {
             _sectionHeader(
               'New Arrivals',
               'View All',
+              onTap: () {
+                setState(() {
+                  selectedCategory = 0;
+                });
+              },
             ),
 
             const SizedBox(height: 15),
 
             SizedBox(
-              height: 310,
+              height: 330,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -409,7 +513,7 @@ class _HomeContentState extends State<HomeContent> {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 28),
 
             // ============================================================
             // TRENDING NOW
@@ -418,12 +522,17 @@ class _HomeContentState extends State<HomeContent> {
             _sectionHeader(
               'Trending Now',
               'View All',
+              onTap: () {
+                setState(() {
+                  selectedCategory = 0;
+                });
+              },
             ),
 
             const SizedBox(height: 15),
 
             SizedBox(
-              height: 310,
+              height: 330,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -453,69 +562,118 @@ class _HomeContentState extends State<HomeContent> {
             // STYLE STUDIO
             // ============================================================
 
-            ClipRRect(
-              borderRadius: BorderRadius.circular(22),
-              child: Container(
-                height: 180,
-                width: double.infinity,
-                color: darkCharcoal,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      right: -30,
-                      top: -20,
-                      child: ClipOval(
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',
-                          width: 220,
-                          height: 220,
-                          fit: BoxFit.cover,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const StyleStudioScreen(),
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(22),
+                child: Container(
+                  height: 185,
+                  width: double.infinity,
+                  color: darkCharcoal,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: -30,
+                        top: -20,
+                        child: ClipOval(
+                          child: Image.network(
+                            'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',
+                            width: 220,
+                            height: 220,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
 
-                    const Padding(
-                      padding: EdgeInsets.all(22),
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'STYLE STUDIO',
-                            style: TextStyle(
-                              color: blushPink,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 2,
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Container(
+                          width: 150,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                darkCharcoal,
+                                darkCharcoal.withValues(
+                                  alpha: 0.15,
+                                ),
+                              ],
                             ),
                           ),
-
-                          SizedBox(height: 8),
-
-                          Text(
-                            'Create your\nperfect look',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-
-                          SizedBox(height: 10),
-
-                          Text(
-                            'Explore Style Studio →',
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+
+                      const Padding(
+                        padding: EdgeInsets.all(22),
+                        child: Column(
+                          crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                          mainAxisAlignment:
+                              MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'STYLE STUDIO',
+                              style: TextStyle(
+                                color: blushPink,
+                                fontSize: 11,
+                                fontWeight:
+                                    FontWeight.bold,
+                                letterSpacing: 2,
+                              ),
+                            ),
+
+                            SizedBox(height: 8),
+
+                            Text(
+                              'Create your\nperfect look',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 23,
+                                height: 1.15,
+                                fontWeight:
+                                    FontWeight.bold,
+                              ),
+                            ),
+
+                            SizedBox(height: 12),
+
+                            Row(
+                              mainAxisSize:
+                                  MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Explore Style Studio',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 12,
+                                    fontWeight:
+                                        FontWeight.w500,
+                                  ),
+                                ),
+                                SizedBox(width: 5),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.white70,
+                                  size: 15,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -529,12 +687,17 @@ class _HomeContentState extends State<HomeContent> {
             _sectionHeader(
               'Recommended For You',
               'View All',
+              onTap: () {
+                setState(() {
+                  selectedCategory = 0;
+                });
+              },
             ),
 
             const SizedBox(height: 15),
 
             SizedBox(
-              height: 310,
+              height: 330,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -594,17 +757,33 @@ class _HomeContentState extends State<HomeContent> {
           children: [
             Stack(
               children: [
-                ClipRRect(
-                  borderRadius:
-                      BorderRadius.circular(16),
-                  child: Image.network(
-                    product.imageUrl,
-                    height: 230,
-                    width: 180,
-                    fit: BoxFit.cover,
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.circular(17),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(
+                          alpha: 0.07,
+                        ),
+                        blurRadius: 12,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.circular(17),
+                    child: Image.network(
+                      product.imageUrl,
+                      height: 230,
+                      width: 180,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
 
+                // BADGE
                 if (product.badge != null)
                   Positioned(
                     top: 10,
@@ -616,10 +795,9 @@ class _HomeContentState extends State<HomeContent> {
                         vertical: 5,
                       ),
                       decoration: BoxDecoration(
-                        color:
-                            product.badge == 'SALE'
-                                ? sageGreen
-                                : azaleaPink,
+                        color: product.badge == 'SALE'
+                            ? sageGreen
+                            : azaleaPink,
                         borderRadius:
                             BorderRadius.circular(20),
                       ),
@@ -627,13 +805,44 @@ class _HomeContentState extends State<HomeContent> {
                         product.badge!,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 10,
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                // DISCOUNT
+                if (product.discount != null)
+                  Positioned(
+                    bottom: 10,
+                    left: 10,
+                    child: Container(
+                      padding:
+                          const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: darkCharcoal.withValues(
+                          alpha: 0.82,
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        product.discount!,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 9,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ),
 
+                // FAVORITE
                 Positioned(
                   top: 8,
                   right: 8,
@@ -643,7 +852,7 @@ class _HomeContentState extends State<HomeContent> {
               ],
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 11),
 
             Text(
               product.title,
@@ -674,7 +883,7 @@ class _HomeContentState extends State<HomeContent> {
                   Text(
                     product.originalPrice!,
                     style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       color: Colors.grey,
                       decoration:
                           TextDecoration.lineThrough,
@@ -684,13 +893,13 @@ class _HomeContentState extends State<HomeContent> {
               ],
             ),
 
-            const SizedBox(height: 4),
+            const SizedBox(height: 5),
 
             Row(
               children: [
                 const Icon(
                   Icons.star,
-                  size: 15,
+                  size: 14,
                   color: azaleaPink,
                 ),
 
@@ -700,6 +909,26 @@ class _HomeContentState extends State<HomeContent> {
                   product.rating.toString(),
                   style: const TextStyle(
                     fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+
+                const SizedBox(width: 4),
+
+                const Text(
+                  '•',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 11,
+                  ),
+                ),
+
+                const SizedBox(width: 4),
+
+                const Text(
+                  'Popular',
+                  style: TextStyle(
+                    fontSize: 10,
                     color: Colors.grey,
                   ),
                 ),
@@ -736,6 +965,15 @@ class _HomeContentState extends State<HomeContent> {
           color: Colors.white,
           borderRadius:
               BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(
+                alpha: 0.05,
+              ),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment:
@@ -768,10 +1006,9 @@ class _HomeContentState extends State<HomeContent> {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color:
-                              product.badge == 'SALE'
-                                  ? sageGreen
-                                  : azaleaPink,
+                          color: product.badge == 'SALE'
+                              ? sageGreen
+                              : azaleaPink,
                           borderRadius:
                               BorderRadius.circular(15),
                         ),
@@ -782,6 +1019,34 @@ class _HomeContentState extends State<HomeContent> {
                             fontSize: 9,
                             fontWeight:
                                 FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  if (product.discount != null)
+                    Positioned(
+                      bottom: 8,
+                      left: 8,
+                      child: Container(
+                        padding:
+                            const EdgeInsets.symmetric(
+                          horizontal: 7,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: darkCharcoal.withValues(
+                            alpha: 0.82,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          product.discount!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -818,17 +1083,40 @@ class _HomeContentState extends State<HomeContent> {
 
                   const SizedBox(height: 5),
 
-                  Text(
-                    product.price,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight:
-                          FontWeight.bold,
-                      color: darkCharcoal,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        product.price,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight:
+                              FontWeight.bold,
+                          color: darkCharcoal,
+                        ),
+                      ),
+
+                      if (product.originalPrice != null)
+                        const SizedBox(width: 5),
+
+                      if (product.originalPrice != null)
+                        Flexible(
+                          child: Text(
+                            product.originalPrice!,
+                            overflow:
+                                TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey,
+                              decoration:
+                                  TextDecoration
+                                      .lineThrough,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
 
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 4),
 
                   Row(
                     children: [
@@ -870,15 +1158,44 @@ class _HomeContentState extends State<HomeContent> {
             azaleaStore.isWishlisted(product);
 
         return Container(
+          width: 37,
+          height: 37,
           decoration: BoxDecoration(
             color: Colors.white.withValues(
-              alpha: 0.9,
+              alpha: 0.92,
             ),
             shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(
+                  alpha: 0.08,
+                ),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: IconButton(
+            padding: EdgeInsets.zero,
             onPressed: () {
               azaleaStore.toggleWishlist(product);
+
+              ScaffoldMessenger.of(context)
+                  .hideCurrentSnackBar();
+
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                SnackBar(
+                  content: Text(
+                    liked
+                        ? 'Removed from wishlist'
+                        : 'Added to wishlist ❤️',
+                  ),
+                  backgroundColor: azaleaPink,
+                  duration:
+                      const Duration(seconds: 1),
+                ),
+              );
             },
             icon: Icon(
               liked
@@ -896,10 +1213,10 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   // ============================================================
-  // CATEGORY CHIP
+  // CATEGORY ITEM
   // ============================================================
 
-  Widget _categoryChip(
+  Widget _categoryItem(
     String title,
     bool selected,
     VoidCallback onTap,
@@ -907,31 +1224,79 @@ class _HomeContentState extends State<HomeContent> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin:
-            const EdgeInsets.only(right: 10),
-        padding:
-            const EdgeInsets.symmetric(
-          horizontal: 18,
-        ),
-        decoration: BoxDecoration(
-          color: selected
-              ? azaleaPink
-              : Colors.white,
-          borderRadius:
-              BorderRadius.circular(22),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              color: selected
-                  ? Colors.white
-                  : darkCharcoal,
-              fontWeight:
-                  FontWeight.w600,
-              fontSize: 13,
+        width: 72,
+        margin: const EdgeInsets.only(right: 12),
+        child: Column(
+          children: [
+            AnimatedContainer(
+              duration:
+                  const Duration(milliseconds: 200),
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                color: selected
+                    ? azaleaPink
+                    : Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected
+                      ? azaleaPink
+                      : inputBorderColor,
+                  width: 1,
+                ),
+                boxShadow: selected
+                    ? [
+                        BoxShadow(
+                          color:
+                              azaleaPink.withValues(
+                            alpha: 0.25,
+                          ),
+                          blurRadius: 12,
+                          offset:
+                              const Offset(0, 5),
+                        ),
+                      ]
+                    : [
+                        BoxShadow(
+                          color:
+                              Colors.black.withValues(
+                            alpha: 0.03,
+                          ),
+                          blurRadius: 5,
+                          offset:
+                              const Offset(0, 2),
+                        ),
+                      ],
+              ),
+              child: Icon(
+                categoryIcons[title] ??
+                    Icons.category_outlined,
+                color: selected
+                    ? Colors.white
+                    : darkCharcoal,
+                size: 23,
+              ),
             ),
-          ),
+
+            const SizedBox(height: 7),
+
+            Text(
+              title,
+              maxLines: 1,
+              overflow:
+                  TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: selected
+                    ? FontWeight.bold
+                    : FontWeight.w500,
+                color: selected
+                    ? azaleaPink
+                    : subtitleColor,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -943,8 +1308,9 @@ class _HomeContentState extends State<HomeContent> {
 
   Widget _sectionHeader(
     String title,
-    String action,
-  ) {
+    String action, {
+    VoidCallback? onTap,
+  }) {
     return Row(
       mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
@@ -958,12 +1324,26 @@ class _HomeContentState extends State<HomeContent> {
           ),
         ),
 
-        Text(
-          action,
-          style: const TextStyle(
-            fontSize: 13,
-            color: azaleaPink,
-            fontWeight: FontWeight.w600,
+        GestureDetector(
+          onTap: onTap,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                action,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: azaleaPink,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(width: 3),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 11,
+                color: azaleaPink,
+              ),
+            ],
           ),
         ),
       ],
@@ -986,6 +1366,15 @@ Widget _searchBox(String hint) {
       color: Colors.white,
       borderRadius:
           BorderRadius.circular(15),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(
+            alpha: 0.04,
+          ),
+          blurRadius: 10,
+          offset: const Offset(0, 3),
+        ),
+      ],
     ),
     child: Row(
       children: [
@@ -996,15 +1385,30 @@ Widget _searchBox(String hint) {
 
         const SizedBox(width: 10),
 
-        Text(
-          hint,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 14,
+        Expanded(
+          child: Text(
+            hint,
+            style: const TextStyle(
+              color: Colors.grey,
+              fontSize: 14,
+            ),
+          ),
+        ),
+
+        Container(
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+            color: blushPink,
+            borderRadius:
+                BorderRadius.circular(10),
+          ),
+          child: const Icon(
+            Icons.tune_rounded,
+            color: azaleaPink,
+            size: 18,
           ),
         ),
       ],
     ),
   );
 }
-
