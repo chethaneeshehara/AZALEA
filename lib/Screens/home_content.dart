@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../theme/azalea_colors.dart';
@@ -38,13 +39,13 @@ class _HomeContentState extends State<HomeContent> {
   // ============================================================
 
   final Map<String, IconData> categoryIcons = {
-  'All': Icons.grid_view_rounded,
-  'Dresses': Icons.checkroom_outlined,
-  'Tops': Icons.shopping_bag_outlined,
-  'Bottoms': Icons.style_outlined,
-  'Shoes': Icons.shopping_bag_outlined,
-  'Accessories': Icons.watch_outlined,
-};
+    'All': Icons.grid_view_rounded,
+    'Dresses': Icons.checkroom_outlined,
+    'Tops': Icons.shopping_bag_outlined,
+    'Bottoms': Icons.style_outlined,
+    'Shoes': Icons.shopping_bag_outlined,
+    'Accessories': Icons.watch_outlined,
+  };
 
   // ============================================================
   // FILTER PRODUCTS BY CATEGORY
@@ -179,8 +180,8 @@ class _HomeContentState extends State<HomeContent> {
                   );
                 },
                 child: ClipOval(
-                  child: Image.network(
-                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
+                  child: Image.asset(
+                    'assets/images/products/profile.jpg',
                     width: 45,
                     height: 45,
                     fit: BoxFit.cover,
@@ -239,8 +240,8 @@ class _HomeContentState extends State<HomeContent> {
                 width: double.infinity,
                 child: Stack(
                   children: [
-                    Image.network(
-                      'https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?w=1000',
+                    Image.asset(
+                      'assets/images/products/hero_banner.jpg',
                       width: double.infinity,
                       height: double.infinity,
                       fit: BoxFit.cover,
@@ -584,8 +585,8 @@ class _HomeContentState extends State<HomeContent> {
                         right: -30,
                         top: -20,
                         child: ClipOval(
-                          child: Image.network(
-                            'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=500',
+                          child: Image.asset(
+                            'assets/images/products/style_studio.jpg',
                             width: 220,
                             height: 220,
                             fit: BoxFit.cover,
@@ -774,7 +775,7 @@ class _HomeContentState extends State<HomeContent> {
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.circular(17),
-                    child: Image.network(
+                    child: Image.asset(
                       product.imageUrl,
                       height: 230,
                       width: 180,
@@ -987,7 +988,7 @@ class _HomeContentState extends State<HomeContent> {
                         const BorderRadius.vertical(
                       top: Radius.circular(16),
                     ),
-                    child: Image.network(
+                    child: Image.asset(
                       product.imageUrl,
                       width: double.infinity,
                       height: double.infinity,
@@ -1412,3 +1413,4 @@ Widget _searchBox(String hint) {
     ),
   );
 }
+

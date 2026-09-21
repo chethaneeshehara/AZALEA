@@ -10,7 +10,7 @@ final List<AzaleaProduct> azaleaProducts = [
     originalPrice: '\$249',
     discount: '24% OFF',
     imageUrl:
-        'https://images.unsplash.com/photo-1564257577054-7c0d8f4a0f87?w=700',
+        'assets/images/products/dress01.jpg',
   ),
   AzaleaProduct(
     title: 'Azalea Pink Blouse',
@@ -18,7 +18,7 @@ final List<AzaleaProduct> azaleaProducts = [
     category: 'Tops',
     rating: 4.6,
     imageUrl:
-        'https://images.unsplash.com/photo-1564257577054-7c0d8f4a0f87?w=700',
+        'assets/images/products/top1.jpg',
   ),
   AzaleaProduct(
     title: 'Ivory Satin Dress',
@@ -29,7 +29,7 @@ final List<AzaleaProduct> azaleaProducts = [
     originalPrice: '\$285',
     discount: '25% OFF',
     imageUrl:
-        'https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=700',
+        'assets/images/products/dress02.jpg',
   ),
   AzaleaProduct(
     title: 'Classic Beige Trousers',
@@ -37,7 +37,7 @@ final List<AzaleaProduct> azaleaProducts = [
     category: 'Bottoms',
     rating: 4.5,
     imageUrl:
-        'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=700',
+        'assets/images/products/bottom01.jpg',
   ),
   AzaleaProduct(
     title: 'Soft Pink Cardigan',
@@ -46,7 +46,7 @@ final List<AzaleaProduct> azaleaProducts = [
     rating: 4.7,
     badge: 'NEW',
     imageUrl:
-        'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=700',
+        'assets/images/products/top02.jpg',
   ),
   AzaleaProduct(
     title: 'Minimal White Sneakers',
@@ -54,7 +54,7 @@ final List<AzaleaProduct> azaleaProducts = [
     category: 'Shoes',
     rating: 4.8,
     imageUrl:
-        'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700',
+        'assets/images/products/shoes01.jpg',
   ),
   AzaleaProduct(
     title: 'Blush Pleated Skirt',
@@ -62,7 +62,7 @@ final List<AzaleaProduct> azaleaProducts = [
     category: 'Bottoms',
     rating: 4.8,
     imageUrl:
-        'https://images.unsplash.com/photo-1583496661160-fb5886a13d27?w=700',
+        'assets/images/products/skirt01.jpg',
   ),
   AzaleaProduct(
     title: 'Sage Green Handbag',
@@ -70,6 +70,6 @@ final List<AzaleaProduct> azaleaProducts = [
     category: 'Accessories',
     rating: 4.9,
     imageUrl:
-        'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=700',
+        'assets/images/products/bag01.jpg',
   ),
 ];
